@@ -14,7 +14,23 @@ local default_config = {
       "mpv"
    }
 }
+local config = default_config
 local M = {}
+
+local function is_supported_player(arg)
+   for _, player in ipairs(config.supported_players) do
+      if arg == player then return true end
+   end
+   return false
+end
+
+local function is_playback_command(arg)
+   for _, command in ipairs(playback_commands) do
+      if arg == command then return true end
+   end
+   return false
+end
+
 
 M.setup = function(opts)
    -- merge plaback commands to player_args
@@ -22,7 +38,6 @@ M.setup = function(opts)
       table.insert(player_args, command)
    end
 
-   local config = default_config
    if opts and next(opts) then
       config = opts
    end
