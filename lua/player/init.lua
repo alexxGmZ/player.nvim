@@ -27,8 +27,8 @@ M.setup = function(opts)
       config = opts
    end
 
-   -- merge supported players to player_args, it is to make sure included players will
-   -- appear in cmdline completion
+   -- merge supported players to player_args, it is to make sure included players via user
+   -- config will appear in cmdline completion
    for _, player in ipairs(config.supported_players) do
       table.insert(player_args, player)
    end
