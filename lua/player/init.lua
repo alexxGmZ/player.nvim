@@ -13,8 +13,8 @@ local default_config = {
       "cmus",
       "spotify",
       "firefox",
-      "mpv"
-   }
+      "mpv",
+   },
 }
 local config = default_config
 local M = {}
@@ -24,7 +24,9 @@ local M = {}
 ---@return boolean
 local function is_supported_player(arg)
    for _, player in ipairs(config.supported_players) do
-      if arg == player then return true end
+      if arg == player then
+         return true
+      end
    end
    return false
 end
@@ -34,14 +36,16 @@ end
 ---@return boolean
 local function is_playback_command(arg)
    for _, command in ipairs(playback_commands) do
-      if arg == command then return true end
+      if arg == command then
+         return true
+      end
    end
    return false
 end
 
 --- Notify player status
 ---@param supported_player string|nil
----@return function - player status notificiation
+---@return nil
 local function notify_player(supported_player)
    local status_command = "playerctl status"
    local player_name_command = "playerctl metadata --format '{{ playerName }}'"
@@ -55,7 +59,7 @@ local function notify_player(supported_player)
 
    local status = string.gsub(system(status_command), "\n", "")
    if status == "No players found" or status == "Stopped" then
-      return notify(status, "WARN");
+      return notify(status, vim.log.levels.WARN)
    end
 
    local player_name = string.gsub(system(player_name_command), "\n", "")
@@ -67,8 +71,12 @@ local function notify_player(supported_player)
 
    status = string.gsub(system(status_command), "\n", "")
    local notify_table_data = {
-      status, " (", player_name, ")\n",
-      status_icons[status], song
+      status,
+      " (",
+      player_name,
+      ")\n",
+      status_icons[status],
+      song,
    }
 
    return notify(table.concat(notify_table_data))
@@ -100,25 +108,52 @@ M.setup = function(opts)
          end
 
          if not is_playback_command(arg2) then
-            return notify("Invalid player argument " .. arg2, "WARN")
+            return notify("Invalid player argument " .. arg2, vim.log.levels.WARN)
          end
 
-         system("playerctl -p " .. arg1 .. " " .. arg2)
-         return notify_player(arg1)
+         M.run_player_command(arg1, arg2)
       end
 
       if arg1 ~= "" and not is_supported_player(arg1) and not is_playback_command(arg1) then
-         return notify("Invalid argument " .. arg1, "WARN")
+         return notify("Invalid argument " .. arg1, vim.log.levels.WARN)
       end
 
-      system("playerctl " .. arg1)
-      notify_player()
+      M.run_command(arg1)
    end, {
       nargs = "*",
       complete = function()
          return player_args
-      end
+      end,
    })
+end
+
+--- Run command on the specific player and notify the user
+---@param command string
+---@param player string
+---@return nil
+M.run_player_command = function(command, player)
+   system("playerctl -p " .. player .. " " .. command)
+   return notify_player(command)
+end
+
+--- Run command with playerctl and notify the user
+---@param command string
+---@return nil
+M.run_command = function(command)
+   system("playerctl " .. command)
+   return notify(command)
+end
+
+--- Show a UI selection for playback commands
+---@param select_opts table Options for vim.ui.select
+---@return nil
+M.select = function(select_opts)
+   local opts = select_opts or {}
+   opts.prompt = opts.prompt or "Select player action"
+
+   vim.ui.select(playback_commands, opts, function(item)
+      M.run_command(item)
+   end)
 end
 
 return M

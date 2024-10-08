@@ -89,3 +89,9 @@ require("player").setup({
   }
 })
 ```
+
+Select playback command using vim.ui.select. 
+
+```
+:lua require("player").select({ prompt = "Select player action:" })
+```
