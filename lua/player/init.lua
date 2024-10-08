@@ -1,3 +1,4 @@
+local notify_player = require("notify")
 local player_args = {}
 local playback_commands = {
    "next",
@@ -33,6 +34,8 @@ end
 
 
 M.setup = function(opts)
+   local notify = vim.notify
+
    -- merge plaback commands to player_args
    for _, command in ipairs(playback_commands) do
       table.insert(player_args, command)
@@ -51,8 +54,11 @@ M.setup = function(opts)
    vim.api.nvim_create_user_command("Player", function(args)
       local arg1 = args.fargs[1] or ""
       local arg2 = args.fargs[2] or ""
-
       print(arg1, arg2)
+
+      if arg1 ~= "" and not is_supported_player(arg1) and not is_playback_command(arg1) then
+         return notify("Invalid argument " .. arg1, "WARN")
+      end
    end, {
       nargs = "*",
       complete = function()
