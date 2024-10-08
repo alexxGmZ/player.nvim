@@ -37,6 +37,15 @@ become a music player at all.
 
 ## Usage
 
+Since this plugin is **not a media player** itself but a tool to control media player
+playback, the media player application needs to be open first.
+
+To ensure the desired media player application is supported, check it using `playerctl`.
+
+```bash
+playerctl -l
+```
+
 **Playback commands**
 
 ```
