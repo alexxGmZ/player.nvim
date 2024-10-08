@@ -87,6 +87,10 @@ M.setup = function(opts)
       print(arg1, arg2)
 
       if is_supported_player(arg1) then
+         if arg2 == "" then
+            return notify_player(arg1)
+         end
+
          if not is_playback_command(arg2) then
             return notify("Invalid player argument " .. arg2, "WARN")
          end
