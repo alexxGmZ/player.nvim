@@ -89,6 +89,8 @@ M.setup = function(opts)
       if arg1 ~= "" and not is_supported_player(arg1) and not is_playback_command(arg1) then
          return notify("Invalid argument " .. arg1, "WARN")
       end
+
+      notify_player()
    end, {
       nargs = "*",
       complete = function()
