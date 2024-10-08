@@ -5,6 +5,16 @@ using playerctl.
 
 <br>
 
+## Why?
+
+I made this plugin mainly for myself. I don't want to leave the editor just to pause,
+play, or skip tracks while coding, as it really disrupts my flow. If I need to do
+something more intensive with the music player, that should be the only reason to switch
+back to the music player application. For that reason, I don't intend for Neovim to
+become a music player at all.
+
+<br>
+
 **Dependencies:**
 
 * [playerctl](https://github.com/altdesktop/playerctl)
