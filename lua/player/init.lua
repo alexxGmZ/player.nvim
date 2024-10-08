@@ -40,7 +40,7 @@ local function is_playback_command(arg)
 end
 
 --- Notify player status
----@param supported_player string - (optional)
+---@param supported_player string|nil
 ---@return function - player status notificiation
 local function notify_player(supported_player)
    local status_command = "playerctl status"
