@@ -3,6 +3,8 @@
 A Neovim plugin that control media players that supports [MPRIS](https://wiki.archlinux.org/title/MPRIS)
 using playerctl.
 
+https://github.com/user-attachments/assets/6e18b921-e5e7-402f-95b5-4ffa607606b1
+
 <br>
 
 ## Why?
