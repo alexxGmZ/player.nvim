@@ -19,6 +19,9 @@ local default_config = {
 local config = default_config
 local M = {}
 
+--- If an argument is a supported player
+---@param arg string
+---@return boolean
 local function is_supported_player(arg)
    for _, player in ipairs(config.supported_players) do
       if arg == player then return true end
@@ -26,6 +29,9 @@ local function is_supported_player(arg)
    return false
 end
 
+--- If an argument is a playback command
+---@param arg string
+---@return boolean
 local function is_playback_command(arg)
    for _, command in ipairs(playback_commands) do
       if arg == command then return true end
@@ -33,6 +39,9 @@ local function is_playback_command(arg)
    return false
 end
 
+--- Notify player status
+---@param supported_player string - (optional)
+---@return function - player status notificiation
 local function notify_player(supported_player)
    local status_command = "playerctl status"
    local player_name_command = "playerctl metadata --format '{{ playerName }}'"
