@@ -112,6 +112,7 @@ M.setup = function(opts)
          end
 
          system("playerctl -p " .. arg1 .. " " .. arg2)
+         vim.wait(500)
          return notify_player(arg1)
       end
 
@@ -120,6 +121,7 @@ M.setup = function(opts)
       end
 
       system("playerctl " .. arg1)
+      vim.wait(500)
       notify_player()
    end, {
       nargs = "*",
