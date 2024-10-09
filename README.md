@@ -32,7 +32,7 @@ become a music player at all.
   "alexxGmZ/player.nvim",
   cmd = "Player",
   config = function()
-     require("player").setup()
+    require("player").setup()
   end
 }
 ```
