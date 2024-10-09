@@ -26,7 +26,6 @@ become a music player at all.
 ## Install
 
 **Lazy**
-
 ```lua
 {
   "alexxGmZ/player.nvim",
@@ -43,13 +42,11 @@ Since this plugin is **not a media player** itself but a tool to control media p
 playback, the media player application needs to be open first.
 
 To ensure the desired media player application is supported, check it using `playerctl`.
-
 ```bash
 playerctl -l
 ```
 
 **Playback commands**
-
 ```
 next
 previous
@@ -59,19 +56,16 @@ play-pause
 ```
 
 Display the status of the current active player.
-
 ```
 :Player
 ```
 
 Display the status of the selected player.
-
 ```
 :Player <selected_player>
 ```
 
 Control player playback
-
 ```
 :Player <playback_command>
 :Player <selected_player> <playback_command>
