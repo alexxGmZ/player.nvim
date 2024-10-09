@@ -1,5 +1,6 @@
 local system = vim.fn.system
 local notify = vim.notify
+local api = require("player.api")
 local player_args = {}
 local playback_commands = {
    "next",
@@ -43,32 +44,18 @@ end
 ---@param supported_player string|nil
 ---@return function - player status notificiation
 local function notify_player(supported_player)
-   local status_command = "playerctl status"
-   local player_name_command = "playerctl metadata --format '{{ playerName }}'"
-   local artist_command = "playerctl metadata --format '{{ artist }}'"
-   local title_command = "playerctl metadata --format '{{ title }}'"
-   local url_command = "playerctl metadata --format '{{ xesam:url }}'"
-
-   if supported_player then
-      status_command = "playerctl -p " .. supported_player .. " status"
-      player_name_command = "playerctl -p " .. supported_player .. " metadata --format '{{ playerName }}'"
-      artist_command = "playerctl -p " .. supported_player .. " metadata --format '{{ artist }}'"
-      title_command = "playerctl -p " .. supported_player .. " metadata --format '{{ title }}'"
-      url_command = "playerctl metadata -p " .. supported_player .. " --format '{{ xesam:url }}'"
-   end
-
-   local status = string.gsub(system(status_command), "\n", "")
+   local status = api.get_status(supported_player)
    if status == "No players found" or status == "Stopped" then
       return notify(status, "WARN");
    end
 
-   local player_name = string.gsub(system(player_name_command), "\n", "")
-   local artist = string.gsub(system(artist_command), "\n", "")
-   local title = string.gsub(system(title_command), "\n", "")
+   local player_name = api.get_player_name(supported_player)
+   local artist = api.get_artist(supported_player)
+   local title = api.get_title(supported_player)
    local song = artist .. " - " .. title
 
    if artist == "" and title == "" then
-      song = string.gsub(system(url_command), "\n", "")
+      song = api.get_file_url(supported_player)
    elseif artist == "" then
       -- prevents displaying " - title" if no artist (minor stuff)
       song = title
@@ -79,7 +66,7 @@ local function notify_player(supported_player)
       Paused = "󰏤 ",
    }
 
-   status = string.gsub(system(status_command), "\n", "")
+   status = api.get_status(supported_player)
    local notify_table_data = {
       status, " (", player_name, ")\n",
       status_icons[status], song
