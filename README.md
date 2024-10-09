@@ -83,3 +83,21 @@ require("player").setup({
   }
 })
 ```
+
+## API
+
+To call the api.
+```lua
+local api = require("player.api")
+```
+
+API functions.
+
+| Function          | Parameter/s           | Return                       |
+| ----------------- | --------------------- | ---------------------------- |
+| get_artist()      | player{string \| nil} | Song artist {string}         |
+| get_title()       | player{string \| nil} | Song title {string}          |
+| get_status()      | player{string \| nil} | Media player status {string} |
+| get_player_name() | player{string \| nil} | Media player name {string}   |
+| get_file_url()    | player{string \| nil} | Media file URL {string}      |
+
