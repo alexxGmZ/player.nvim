@@ -45,12 +45,16 @@ end
 local function notify_player(supported_player)
    local status_command = "playerctl status"
    local player_name_command = "playerctl metadata --format '{{ playerName }}'"
-   local song_command = "playerctl metadata --format '{{ artist }} - {{ title }}'"
+   local artist_command = "playerctl metadata --format '{{ artist }}'"
+   local title_command = "playerctl metadata --format '{{ title }}'"
+   local url_command = "playerctl metadata --format '{{ xesam:url }}'"
 
    if supported_player then
       status_command = "playerctl -p " .. supported_player .. " status"
       player_name_command = "playerctl -p " .. supported_player .. " metadata --format '{{ playerName }}'"
-      song_command = "playerctl -p " .. supported_player .. " metadata --format '{{ artist }} - {{ title }}'"
+      artist_command = "playerctl -p " .. supported_player .. " metadata --format '{{ artist }}'"
+      title_command = "playerctl -p " .. supported_player .. " metadata --format '{{ title }}'"
+      url_command = "playerctl metadata -p " .. supported_player .. " --format '{{ xesam:url }}'"
    end
 
    local status = string.gsub(system(status_command), "\n", "")
@@ -59,7 +63,17 @@ local function notify_player(supported_player)
    end
 
    local player_name = string.gsub(system(player_name_command), "\n", "")
-   local song = string.gsub(system(song_command), "\n", "")
+   local artist = string.gsub(system(artist_command), "\n", "")
+   local title = string.gsub(system(title_command), "\n", "")
+   local song = artist .. " - " .. title
+
+   if artist == "" and title == "" then
+      song = string.gsub(system(url_command), "\n", "")
+   elseif artist == "" then
+      -- prevents displaying " - title" if no artist (minor stuff)
+      song = title
+   end
+
    local status_icons = {
       Playing = "󰐊 ",
       Paused = "󰏤 ",
