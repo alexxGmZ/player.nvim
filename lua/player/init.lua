@@ -1,5 +1,4 @@
 local system = vim.fn.system
-local notify = vim.notify
 local api = require("player.api")
 local player_args = {}
 local playback_commands = {
@@ -19,6 +18,14 @@ local default_config = {
 }
 local config = default_config
 local M = {}
+
+--- nvim-notify support
+---@param message string notify message
+---@param log_level string|nil vim.log.levels
+---@return function vim.notify
+local function notify(message, log_level)
+   return vim.notify(message, log_level, { title = "player.nvim" })
+end
 
 --- If an argument is a supported player
 ---@param arg string
