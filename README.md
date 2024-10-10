@@ -53,16 +53,28 @@ previous
 pause
 play
 play-pause
+default
 ```
 
-Display the status of the current active player.
+Notify the status of the current default player.
 ```
 :Player
 ```
 
-Display the status of the selected player.
+Notify the status of the selected player.
 ```
 :Player <selected_player>
+```
+
+Notify the default player for the current neovim session. If empty then the default player
+will be according to playerctl.
+```
+:Player default
+```
+
+Set a default player for the whole neovim session.
+```
+:Player <selected_player> default
 ```
 
 Control player playback
