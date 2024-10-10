@@ -138,7 +138,7 @@ M.setup = function(opts)
          return notify("Default player: " .. default_player)
       end
 
-      -- if a primary player is set :Player <selected_player>
+      -- if a default player is set `:Player <selected_player> default`
       if default_player ~= "" then
          status = api.get_status(default_player)
 
