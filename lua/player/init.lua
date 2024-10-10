@@ -110,13 +110,9 @@ M.setup = function(opts)
 
          if arg2 == "" then
             return notify_player(arg1)
-         end
-
-         if not is_playback_command(arg2) then
+         elseif not is_playback_command(arg2) then
             return notify("Invalid player argument " .. arg2, "WARN")
-         end
-
-         if arg2 == "default" then
+         elseif arg2 == "default" then
             default_player = arg1
             return notify("Default player: " .. default_player)
          end
@@ -132,9 +128,7 @@ M.setup = function(opts)
 
       if arg1 ~= "" and not is_supported_player(arg1) and not is_playback_command(arg1) then
          return notify("Invalid argument " .. arg1, "WARN")
-      end
-
-      if arg1 == "default" then
+      elseif arg1 == "default" then
          return notify("Default player: " .. default_player)
       end
 
@@ -148,9 +142,7 @@ M.setup = function(opts)
 
          if arg1 == "" then
             return notify_player(default_player)
-         end
-
-         if not is_playback_command(arg1) then
+         elseif not is_playback_command(arg1) then
             return notify("Invalid player argument " .. arg1, "WARN")
          end
 
