@@ -7,6 +7,7 @@ local playback_commands = {
    "pause",
    "play",
    "play-pause",
+   "default"
 }
 local default_config = {
    supported_players = {
@@ -17,6 +18,7 @@ local default_config = {
    }
 }
 local config = default_config
+local default_player = ""
 local M = {}
 
 --- nvim-notify support
@@ -114,6 +116,11 @@ M.setup = function(opts)
             return notify("Invalid player argument " .. arg2, "WARN")
          end
 
+         if arg2 == "default" then
+            default_player = arg1
+            return notify("Default player: " .. default_player)
+         end
+
          system("playerctl -p " .. arg1 .. " " .. arg2)
          vim.wait(500)
          return notify_player(arg1)
@@ -125,6 +132,31 @@ M.setup = function(opts)
 
       if arg1 ~= "" and not is_supported_player(arg1) and not is_playback_command(arg1) then
          return notify("Invalid argument " .. arg1, "WARN")
+      end
+
+      if arg1 == "default" then
+         return notify("Default player: " .. default_player)
+      end
+
+      -- if a primary player is set :Player <selected_player>
+      if default_player ~= "" then
+         status = api.get_status(default_player)
+
+         if status == "No players found" or status == "Stopped" then
+            return notify(status, "WARN");
+         end
+
+         if arg1 == "" then
+            return notify_player(default_player)
+         end
+
+         if not is_playback_command(arg1) then
+            return notify("Invalid player argument " .. arg1, "WARN")
+         end
+
+         system("playerctl -p " .. default_player .. " " .. arg1)
+         vim.wait(500)
+         return notify_player(default_player)
       end
 
       system("playerctl " .. arg1)
