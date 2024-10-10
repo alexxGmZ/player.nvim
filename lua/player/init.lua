@@ -52,10 +52,6 @@ end
 ---@return function - player status notificiation
 local function notify_player(supported_player)
    local status = api.get_status(supported_player)
-   if status == "No players found" or status == "Stopped" then
-      return notify(status, "WARN");
-   end
-
    local player_name = api.get_player_name(supported_player)
    local artist = api.get_artist(supported_player)
    local title = api.get_title(supported_player)
@@ -101,8 +97,15 @@ M.setup = function(opts)
    vim.api.nvim_create_user_command("Player", function(args)
       local arg1 = args.fargs[1] or ""
       local arg2 = args.fargs[2] or ""
+      local status = api.get_status()
 
       if is_supported_player(arg1) then
+         status = api.get_status(arg1)
+
+         if status == "No players found" or status == "Stopped" then
+            return notify(status, "WARN");
+         end
+
          if arg2 == "" then
             return notify_player(arg1)
          end
@@ -114,6 +117,10 @@ M.setup = function(opts)
          system("playerctl -p " .. arg1 .. " " .. arg2)
          vim.wait(500)
          return notify_player(arg1)
+      end
+
+      if status == "No players found" or status == "Stopped" then
+         return notify(status, "WARN");
       end
 
       if arg1 ~= "" and not is_supported_player(arg1) and not is_playback_command(arg1) then
