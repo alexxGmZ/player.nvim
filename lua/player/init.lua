@@ -101,6 +101,16 @@ M.setup = function(opts)
       local arg2 = args.fargs[2] or ""
       local status = api.get_status()
 
+      if status == "No players found" or status == "Stopped" then
+         return notify(status, "WARN");
+      end
+
+      if arg1 ~= "" and not is_supported_player(arg1) and not is_playback_command(arg1) then
+         return notify("Invalid argument " .. arg1, "WARN")
+      elseif arg1 == "default" then
+         return notify("Default player: " .. default_player)
+      end
+
       if is_supported_player(arg1) then
          status = api.get_status(arg1)
 
@@ -120,16 +130,6 @@ M.setup = function(opts)
          system("playerctl -p " .. arg1 .. " " .. arg2)
          vim.wait(500)
          return notify_player(arg1)
-      end
-
-      if status == "No players found" or status == "Stopped" then
-         return notify(status, "WARN");
-      end
-
-      if arg1 ~= "" and not is_supported_player(arg1) and not is_playback_command(arg1) then
-         return notify("Invalid argument " .. arg1, "WARN")
-      elseif arg1 == "default" then
-         return notify("Default player: " .. default_player)
       end
 
       -- if a default player is set `:Player <selected_player> default`
