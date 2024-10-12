@@ -1,4 +1,3 @@
-local system = vim.fn.system
 local api = require("player.api")
 local player_args = {}
 local playback_commands = {
@@ -80,6 +79,19 @@ local function notify_player(supported_player)
    return notify(table.concat(notify_table_data))
 end
 
+--- Run playerctl command
+---@param command string playback command
+---@param player string|nil playerctl supported players
+function M.run_command(command, player)
+   local shell_command = { "playerctl", command }
+   if player then
+      shell_command = { "playerctl", "-p", player, command }
+   end
+   vim.system(shell_command):wait()
+   vim.wait(500)
+   notify_player()
+end
+
 M.setup = function(opts)
    -- merge plaback commands to player_args
    for _, command in ipairs(playback_commands) do
@@ -127,9 +139,7 @@ M.setup = function(opts)
             return notify("Default player: " .. default_player)
          end
 
-         system("playerctl -p " .. arg1 .. " " .. arg2)
-         vim.wait(500)
-         return notify_player(arg1)
+         return M.run_command(arg2, arg1)
       end
 
       -- if a default player is set `:Player <selected_player> default`
@@ -146,14 +156,10 @@ M.setup = function(opts)
             return notify("Invalid player argument " .. arg1, "WARN")
          end
 
-         system("playerctl -p " .. default_player .. " " .. arg1)
-         vim.wait(500)
-         return notify_player(default_player)
+         return M.run_command(arg1, default_player)
       end
 
-      system("playerctl " .. arg1)
-      vim.wait(500)
-      notify_player()
+      M.run_command(arg1)
    end, {
       nargs = "*",
       complete = function()
