@@ -89,7 +89,7 @@ function M.run_command(command, player)
    end
    vim.system(shell_command):wait()
    vim.wait(500)
-   notify_player()
+   notify_player(player)
 end
 
 M.setup = function(opts)
