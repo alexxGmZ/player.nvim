@@ -87,7 +87,13 @@ function M.run_command(player, command)
    if player then
       shell_command = { "playerctl", "-p", player, command }
    end
-   vim.system(shell_command):wait()
+
+   local obj = vim.system(shell_command, { text = true }):wait()
+   if obj.code > 0 then
+      local error = string.gsub(obj.stderr, "\n", "")
+      return notify(error, "WARN")
+   end
+
    vim.wait(500)
    notify_player(player)
 end
