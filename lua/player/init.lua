@@ -117,7 +117,9 @@ M.setup = function(opts)
          return notify(status, "WARN");
       end
 
-      if arg1 ~= "" and not is_supported_player(arg1) and not is_playback_command(arg1) then
+      if arg1 == "" and arg2 == "" then
+         return notify_player()
+      elseif arg1 ~= "" and not is_supported_player(arg1) and not is_playback_command(arg1) then
          return notify("Invalid argument " .. arg1, "WARN")
       elseif arg1 == "default" then
          return notify("Default player: " .. default_player)
