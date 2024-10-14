@@ -79,10 +79,10 @@ local function notify_player(supported_player)
    return notify(table.concat(notify_table_data))
 end
 
---- Run playerctl command
----@param command string playback command
+--- Run playerctl command regardless if the player is not supported by the plugin
 ---@param player string|nil playerctl supported players
-function M.run_command(command, player)
+---@param command string playback command
+function M.run_command(player, command)
    local shell_command = { "playerctl", command }
    if player then
       shell_command = { "playerctl", "-p", player, command }
@@ -139,7 +139,7 @@ M.setup = function(opts)
             return notify("Default player: " .. default_player)
          end
 
-         return M.run_command(arg2, arg1)
+         return M.run_command(arg1, arg2)
       end
 
       -- if a default player is set `:Player <selected_player> default`
@@ -156,10 +156,10 @@ M.setup = function(opts)
             return notify("Invalid player argument " .. arg1, "WARN")
          end
 
-         return M.run_command(arg1, default_player)
+         return M.run_command(default_player, arg1)
       end
 
-      M.run_command(arg1)
+      M.run_command(nil, arg1)
    end, {
       nargs = "*",
       complete = function()
