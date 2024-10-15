@@ -92,6 +92,7 @@ local function notify_now_playing()
       if default_player ~= "" then
          player = default_player
       end
+
       local status = api.get_status(player)
       if status == "No players found" or status == "Stopped" then
          return
@@ -100,6 +101,13 @@ local function notify_now_playing()
       local artist = api.get_artist(player)
       local title = api.get_title(player)
       local song = artist .. " - " .. title
+
+      if artist == "" and title == "" then
+         song = api.get_file_url(player)
+      elseif artist == "" then
+         -- prevents displaying " - title" if no artist (minor stuff)
+         song = title
+      end
 
       if current_track ~= song then
          notify_player(player)
