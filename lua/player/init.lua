@@ -14,10 +14,12 @@ local default_config = {
       "spotify",
       "firefox",
       "mpv"
-   }
+   },
+   notify_now_playing = false
 }
 local config = default_config
 local default_player = ""
+local current_track = ""
 local M = {}
 
 --- nvim-notify support
@@ -79,6 +81,30 @@ local function notify_player(supported_player)
    return notify(table.concat(notify_table_data))
 end
 
+--- Notify the default player's now playing track
+local function notify_now_playing()
+   if not config.notify_now_playing then
+      return
+   end
+
+   local timer = vim.uv.new_timer()
+   timer:start(500, 1500, vim.schedule_wrap(function()
+      local status = api.get_status(default_player)
+      if status == "No players found" or status == "Stopped" then
+         return
+      end
+
+      local artist = api.get_artist(default_player)
+      local title = api.get_title(default_player)
+      local song = artist .. " - " .. title
+
+      if current_track ~= song then
+         notify_player(default_player)
+         current_track = song
+      end
+   end))
+end
+
 --- Run playerctl command regardless if the player is not supported by the plugin
 ---@param player string|nil playerctl supported players
 ---@param command string playback command
@@ -89,6 +115,12 @@ function M.run_command(player, command)
    end
    vim.system(shell_command):wait()
    vim.wait(500)
+
+   -- notify_now_playing() will handle the notification
+   if config.notify_now_playing and command == "next" or command == "previous" then
+      return
+   end
+
    notify_player(player)
 end
 
@@ -101,6 +133,8 @@ M.setup = function(opts)
    if opts and next(opts) then
       config = opts
    end
+
+   notify_now_playing()
 
    -- merge supported players to player_args, it is to make sure included players via user
    -- config will appear in cmdline completion

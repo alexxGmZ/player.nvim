@@ -92,7 +92,8 @@ require("player").setup({
     "spotify",
     "firefox",
     "mpv"
-  }
+  },
+  notify_now_playing = false -- notify the default or active player's now playing track
 })
 ```
 
