@@ -105,11 +105,15 @@ local api = require("player.api")
 
 API functions.
 
-| Function          | Parameter/s           | Return                       |
-| ----------------- | --------------------- | ---------------------------- |
-| get_artist()      | player{string \| nil} | Song artist {string}         |
-| get_title()       | player{string \| nil} | Song title {string}          |
-| get_status()      | player{string \| nil} | Media player status {string} |
-| get_player_name() | player{string \| nil} | Media player name {string}   |
-| get_file_url()    | player{string \| nil} | Media file URL {string}      |
+| Function                  | Parameter/s           | Return                                      |
+| ------------------------- | --------------------- | ------------------------------------------- |
+| get_artist()              | player{string \| nil} | Song artist {string}                        |
+| get_title()               | player{string \| nil} | Song title {string}                         |
+| get_status()              | player{string \| nil} | Media player status {string}                |
+| get_player_name()         | player{string \| nil} | Media player name {string}                  |
+| get_file_url()            | player{string \| nil} | Media file URL {string}                     |
+| get_curr_track_pos()      | player{string \| nil} | Track position in milliseconds {number}     |
+| get_curr_track_len()      | player{string \| nil} | Track length in milliseconds {number}       |
+| get_curr_track_pos_time() | player{string \| nil} | Track position in timestamp format {string} |
+| get_curr_track_len_time() | player{string \| nil} | Track length in timestamp format {string}   |
 

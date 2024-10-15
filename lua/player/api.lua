@@ -1,3 +1,6 @@
+-- Most of these function are just wrappers for playerctl
+-- - AL
+
 local M = {}
 
 --- Get artist metadata
@@ -58,6 +61,54 @@ function M.get_file_url(player)
    end
    local url = string.gsub(vim.fn.system(command), "\n", "")
    return url
+end
+
+--- Get current track position in milliseconds
+---@param player string|nil
+---@return number
+function M.get_curr_track_pos(player)
+   local command = { "playerctl", "metadata", "--format", "{{ position }}" }
+   if player then
+      command = { "playerctl", "-p", player, "metadata", "--format", "{{ position }}" }
+   end
+   local position_str = string.gsub(vim.fn.system(command), "\n", "")
+   return tonumber(position_str) or 0
+end
+
+--- Get current track length in milliseconds
+---@param player string|nil
+---@return number
+function M.get_curr_track_len(player)
+   local command = { "playerctl", "metadata", "--format", "{{ mpris:length }}" }
+   if player then
+      command = { "playerctl", "-p", player, "metadata", "--format", "{{ mpris:length }}" }
+   end
+   local length_str = string.gsub(vim.fn.system(command), "\n", "")
+   return tonumber(length_str) or 0
+end
+
+--- Get current track position in timestamp format
+---@param player string|nil
+---@return string
+function M.get_curr_track_pos_time(player)
+   local command = { "playerctl", "metadata", "--format", "{{ duration(position) }}" }
+   if player then
+      command = { "playerctl", "-p", player, "metadata", "--format", "{{ duration(position) }}" }
+   end
+   local position_timestamp = string.gsub(vim.fn.system(command), "\n", "")
+   return position_timestamp
+end
+
+--- Get current track length in timestamp format
+---@param player string|nil
+---@return string
+function M.get_curr_track_len_time(player)
+   local command = { "playerctl", "metadata", "--format", "{{ duration(mpris:length) }}" }
+   if player then
+      command = { "playerctl", "-p", player, "metadata", "--format", "{{ duration(mpris:length) }}" }
+   end
+   local length_timestamp = string.gsub(vim.fn.system(command), "\n", "")
+   return length_timestamp
 end
 
 return M
