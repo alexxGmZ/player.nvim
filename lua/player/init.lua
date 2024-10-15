@@ -86,10 +86,6 @@ end
 
 --- Notify the default player's now playing track
 local function notify_now_playing()
-   if not config.notify_now_playing then
-      return
-   end
-
    local timer = vim.uv.new_timer()
    timer:start(500, 1500, vim.schedule_wrap(function()
       local player = ""
@@ -141,7 +137,9 @@ M.setup = function(opts)
       config = opts
    end
 
-   notify_now_playing()
+   if config.notify_now_playing then
+      notify_now_playing()
+   end
 
    -- merge supported players to player_args, it is to make sure included players via user
    -- config will appear in cmdline completion
