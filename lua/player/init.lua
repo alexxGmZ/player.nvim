@@ -19,7 +19,6 @@ local default_config = {
 }
 local config = default_config
 local default_player = ""
-local current_track = ""
 local M = {}
 
 --- nvim-notify support
@@ -84,38 +83,6 @@ local function notify_player(supported_player)
    notify(table.concat(notify_table_data))
 end
 
---- Notify the default player's now playing track
-local function notify_now_playing()
-   local timer = vim.uv.new_timer()
-   timer:start(500, 1500, vim.schedule_wrap(function()
-      local player = ""
-      if default_player ~= "" then
-         player = default_player
-      end
-
-      local status = api.get_status(player)
-      if status == "No players found" or status == "Stopped" then
-         return
-      end
-
-      local artist = api.get_artist(player)
-      local title = api.get_title(player)
-      local song = artist .. " - " .. title
-
-      if artist == "" and title == "" then
-         song = api.get_file_url(player)
-      elseif artist == "" then
-         -- prevents displaying " - title" if no artist (minor stuff)
-         song = title
-      end
-
-      if current_track ~= song then
-         notify_player(player)
-         current_track = song
-      end
-   end))
-end
-
 --- Run playerctl command regardless if the player is not supported by the plugin
 ---@param player string|nil playerctl supported players
 ---@param command string playback command
@@ -126,12 +93,6 @@ function M.run_command(player, command)
    end
    vim.system(shell_command):wait()
    vim.wait(500)
-
-   -- notify_now_playing() will handle the notification
-   if config.notify_now_playing and command == "next" or command == "previous" then
-      return
-   end
-
    notify_player(player)
 end
 
@@ -143,10 +104,6 @@ M.setup = function(opts)
 
    if opts and next(opts) then
       config = opts
-   end
-
-   if config.notify_now_playing then
-      notify_now_playing()
    end
 
    -- merge supported players to player_args, it is to make sure included players via user
