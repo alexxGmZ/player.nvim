@@ -89,17 +89,21 @@ local function notify_now_playing()
 
    local timer = vim.uv.new_timer()
    timer:start(500, 1500, vim.schedule_wrap(function()
-      local status = api.get_status(default_player)
+      local player = ""
+      if default_player ~= "" then
+         player = default_player
+      end
+      local status = api.get_status(player)
       if status == "No players found" or status == "Stopped" then
          return
       end
 
-      local artist = api.get_artist(default_player)
-      local title = api.get_title(default_player)
+      local artist = api.get_artist(player)
+      local title = api.get_title(player)
       local song = artist .. " - " .. title
 
       if current_track ~= song then
-         notify_player(default_player)
+         notify_player(player)
          current_track = song
       end
    end))
