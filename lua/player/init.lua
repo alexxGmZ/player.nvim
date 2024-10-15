@@ -14,8 +14,7 @@ local default_config = {
       "spotify",
       "firefox",
       "mpv"
-   },
-   notify_now_playing = false
+   }
 }
 local config = default_config
 local default_player = ""

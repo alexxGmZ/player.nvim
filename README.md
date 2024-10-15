@@ -92,7 +92,7 @@ require("player").setup({
     "spotify",
     "firefox",
     "mpv"
-  },
+  }
 })
 ```
 
