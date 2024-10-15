@@ -52,9 +52,12 @@ end
 
 --- Notify player status
 ---@param supported_player string|nil
----@return function - player status notificiation
 local function notify_player(supported_player)
    local status = api.get_status(supported_player)
+   if status == "No players found" or status == "Stopped" then
+      return notify(status, "WARN")
+   end
+
    local player_name = api.get_player_name(supported_player)
    local artist = api.get_artist(supported_player)
    local title = api.get_title(supported_player)
@@ -78,7 +81,7 @@ local function notify_player(supported_player)
       status_icons[status], song
    }
 
-   return notify(table.concat(notify_table_data))
+   notify(table.concat(notify_table_data))
 end
 
 --- Notify the default player's now playing track
@@ -156,7 +159,7 @@ M.setup = function(opts)
       end
 
       if arg1 == "" and arg2 == "" then
-         return notify_player()
+         return notify_player(default_player)
       elseif arg1 ~= "" and not is_supported_player(arg1) and not is_playback_command(arg1) then
          return notify("Invalid argument " .. arg1, "WARN")
       elseif arg1 == "default" then
