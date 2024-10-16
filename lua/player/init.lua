@@ -50,6 +50,24 @@ local function is_playback_command(arg)
    return false
 end
 
+--- Get the player's current track
+---@param player string|nil
+---@return string
+local function get_track(player)
+   local artist = api.get_artist(player)
+   local title = api.get_title(player)
+   local track = artist .. " - " .. title
+
+   if artist == "" and title == "" then
+      track = api.get_file_url(player)
+   elseif artist == "" then
+      -- prevents displaying " - title" if no artist (minor stuff)
+      track = title
+   end
+
+   return track
+end
+
 --- Notify player status
 ---@param supported_player string|nil
 local function notify_player(supported_player)
@@ -59,16 +77,7 @@ local function notify_player(supported_player)
    end
 
    local player_name = api.get_player_name(supported_player)
-   local artist = api.get_artist(supported_player)
-   local title = api.get_title(supported_player)
-   local song = artist .. " - " .. title
-
-   if artist == "" and title == "" then
-      song = api.get_file_url(supported_player)
-   elseif artist == "" then
-      -- prevents displaying " - title" if no artist (minor stuff)
-      song = title
-   end
+   local song = get_track(supported_player)
 
    local status_icons = {
       Playing = "󰐊 ",
@@ -102,9 +111,7 @@ local function notify_now_playing()
             return
          end
 
-         local artist = api.get_artist(default_player)
-         local title = api.get_title(default_player)
-         local song = artist .. " - " .. title
+         local song = get_track(default_player)
          if current_song ~= song then
             notify_player(default_player)
          end
