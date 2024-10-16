@@ -8,7 +8,7 @@ local M = {}
 ---@return string
 function M.get_artist(player)
    local command = { "playerctl", "metadata", "--format", "{{ artist }}" }
-   if player then
+   if player and player ~= "" then
       command = { "playerctl", "-p", player, "metadata", "--format", "{{ artist }}" }
    end
    local artist = string.gsub(vim.fn.system(command), "\n", "")
@@ -20,7 +20,7 @@ end
 ---@return string
 function M.get_title(player)
    local command = { "playerctl", "metadata", "--format", "{{ title }}" }
-   if player then
+   if player and player ~= "" then
       command = { "playerctl", "-p", player, "metadata", "--format", "{{ title }}" }
    end
    local title = string.gsub(vim.fn.system(command), "\n", "")
@@ -32,7 +32,7 @@ end
 ---@return string
 function M.get_status(player)
    local command = { "playerctl", "status" }
-   if player then
+   if player and player ~= "" then
       command = { "playerctl", "-p", player, "status" }
    end
    local status = string.gsub(vim.fn.system(command), "\n", "")
@@ -44,7 +44,7 @@ end
 ---@return string
 function M.get_player_name(player)
    local command = { "playerctl", "metadata", "--format", "{{ playerName }}" }
-   if player then
+   if player and player ~= "" then
       command = { "playerctl", "-p", player, "metadata", "--format", "{{ playerName }}" }
    end
    local player_name = string.gsub(vim.fn.system(command), "\n", "")
@@ -56,7 +56,7 @@ end
 ---@return string
 function M.get_file_url(player)
    local command = { "playerctl", "metadata", "--format", "{{ xesam:url }}" }
-   if player then
+   if player and player ~= "" then
       command = { "playerctl", "-p", player, "metadata", "--format", "{{ xesam:url }}" }
    end
    local url = string.gsub(vim.fn.system(command), "\n", "")
@@ -68,7 +68,7 @@ end
 ---@return number
 function M.get_curr_track_pos(player)
    local command = { "playerctl", "metadata", "--format", "{{ position }}" }
-   if player then
+   if player and player ~= "" then
       command = { "playerctl", "-p", player, "metadata", "--format", "{{ position }}" }
    end
    local position_str = string.gsub(vim.fn.system(command), "\n", "")
@@ -80,7 +80,7 @@ end
 ---@return number
 function M.get_curr_track_len(player)
    local command = { "playerctl", "metadata", "--format", "{{ mpris:length }}" }
-   if player then
+   if player and player ~= "" then
       command = { "playerctl", "-p", player, "metadata", "--format", "{{ mpris:length }}" }
    end
    local length_str = string.gsub(vim.fn.system(command), "\n", "")
@@ -92,7 +92,7 @@ end
 ---@return string
 function M.get_curr_track_pos_time(player)
    local command = { "playerctl", "metadata", "--format", "{{ duration(position) }}" }
-   if player then
+   if player and player ~= "" then
       command = { "playerctl", "-p", player, "metadata", "--format", "{{ duration(position) }}" }
    end
    local position_timestamp = string.gsub(vim.fn.system(command), "\n", "")
@@ -104,7 +104,7 @@ end
 ---@return string
 function M.get_curr_track_len_time(player)
    local command = { "playerctl", "metadata", "--format", "{{ duration(mpris:length) }}" }
-   if player then
+   if player and player ~= "" then
       command = { "playerctl", "-p", player, "metadata", "--format", "{{ duration(mpris:length) }}" }
    end
    local length_timestamp = string.gsub(vim.fn.system(command), "\n", "")

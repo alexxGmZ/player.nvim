@@ -124,7 +124,7 @@ end
 ---@param command string playback command
 function M.run_command(player, command)
    local shell_command = { "playerctl", command }
-   if player then
+   if player and player ~= "" then
       shell_command = { "playerctl", "-p", player, command }
    end
    vim.system(shell_command):wait()
