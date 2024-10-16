@@ -82,6 +82,7 @@ local function notify_player(supported_player)
    }
 
    notify(table.concat(notify_table_data))
+   current_song = song
 end
 
 --- Notify now playing track of default player or the current active player
@@ -101,7 +102,6 @@ local function notify_now_playing()
          local song = artist .. " - " .. title
          if current_song ~= song then
             notify_player(default_player)
-            current_song = song
          end
       end
    })
