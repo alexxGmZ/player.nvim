@@ -92,7 +92,11 @@ require("player").setup({
     "spotify",
     "firefox",
     "mpv"
-  }
+  },
+
+  -- notify the now playing track of the default player or the current active player
+  -- during these events { CursorHold, CursorHoldI, and FocusGained }
+  notify_now_playing = false
 })
 ```
 
