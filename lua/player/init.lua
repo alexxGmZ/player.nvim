@@ -97,6 +97,11 @@ local function notify_now_playing()
       pattern = "*",
       group = augroup,
       callback = function()
+         local status = api.get_status(default_player)
+         if status == "No players found" or status == "Stopped" or status == "Paused" then
+            return
+         end
+
          local artist = api.get_artist(default_player)
          local title = api.get_title(default_player)
          local song = artist .. " - " .. title
