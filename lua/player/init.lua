@@ -19,7 +19,7 @@ local default_config = {
 }
 local config = default_config
 local default_player = ""
-local current_song = ""
+local current_track = ""
 local M = {}
 
 --- nvim-notify support
@@ -77,7 +77,7 @@ local function notify_player(supported_player)
    end
 
    local player_name = api.get_player_name(supported_player)
-   local song = get_track(supported_player)
+   local track = get_track(supported_player)
 
    local status_icons = {
       Playing = "󰐊 ",
@@ -87,11 +87,11 @@ local function notify_player(supported_player)
    status = api.get_status(supported_player)
    local notify_table_data = {
       status, " (", player_name, ")\n",
-      status_icons[status], song
+      status_icons[status], track
    }
 
    notify(table.concat(notify_table_data))
-   current_song = song
+   current_track = track
 end
 
 --- Notify now playing track of default player or the current active player
@@ -111,8 +111,8 @@ local function notify_now_playing()
             return
          end
 
-         local song = get_track(default_player)
-         if current_song ~= song then
+         local track = get_track(default_player)
+         if current_track ~= track then
             notify_player(default_player)
          end
       end
