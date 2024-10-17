@@ -50,24 +50,6 @@ local function is_playback_command(arg)
    return false
 end
 
---- Get the player's current track
----@param player string|nil
----@return string
-local function get_track(player)
-   local artist = api.get_artist(player)
-   local title = api.get_title(player)
-   local track = artist .. " - " .. title
-
-   if artist == "" and title == "" then
-      track = api.get_file_url(player)
-   elseif artist == "" then
-      -- prevents displaying " - title" if no artist (minor stuff)
-      track = title
-   end
-
-   return track
-end
-
 --- Notify player status
 ---@param supported_player string|nil
 local function notify_player(supported_player)
@@ -77,7 +59,7 @@ local function notify_player(supported_player)
    end
 
    local player_name = api.get_player_name(supported_player)
-   local track = get_track(supported_player)
+   local track = M.get_track(supported_player)
 
    local status_icons = {
       Playing = "󰐊 ",
@@ -111,7 +93,7 @@ local function notify_now_playing()
             return
          end
 
-         local track = get_track(default_player)
+         local track = M.get_track(default_player)
          if current_track ~= track then
             notify_player(default_player)
          end
@@ -130,6 +112,29 @@ function M.run_command(player, command)
    vim.system(shell_command):wait()
    vim.wait(500)
    notify_player(player)
+end
+
+--- Get the player's current track
+---@param player string|nil
+---@return string
+function M.get_track(player)
+   local status = api.get_status(player)
+   if status == "No players found" or status == "Stopped" then
+      return status
+   end
+
+   local artist = api.get_artist(player)
+   local title = api.get_title(player)
+   local track = artist .. " - " .. title
+
+   if artist == "" and title == "" then
+      track = api.get_file_url(player)
+   elseif artist == "" then
+      -- prevents displaying " - title" if no artist (minor stuff)
+      track = title
+   end
+
+   return track
 end
 
 M.setup = function(opts)
