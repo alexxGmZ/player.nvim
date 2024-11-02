@@ -137,7 +137,7 @@ function M.get_track(player)
    return track
 end
 
-M.setup = function(opts)
+function M.setup(opts)
    -- merge plaback commands to player_args
    for _, command in ipairs(playback_commands) do
       table.insert(player_args, command)
