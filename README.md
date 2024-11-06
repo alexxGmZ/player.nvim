@@ -19,7 +19,7 @@ become a music player at all.
 
 **Dependencies:**
 
-* [playerctl](https://github.com/altdesktop/playerctl)
+* [playerctl](https://github.com/altdesktop/playerctl) 
 
 <br>
 
@@ -32,6 +32,8 @@ become a music player at all.
   cmd = "Player", -- Lazy loading (optional) : plugin is loaded only when the command is called
 }
 ```
+
+Run `:checkhealth player` to check if the plugin is correctly installed.
 
 ## Usage
 
