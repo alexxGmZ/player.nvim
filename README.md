@@ -29,10 +29,7 @@ become a music player at all.
 ```lua
 {
   "alexxGmZ/player.nvim",
-  cmd = "Player",
-  config = function()
-    require("player").setup()
-  end
+  cmd = "Player", -- Lazy loading (optional) : plugin is loaded only when the command is called
 }
 ```
 
