@@ -1,0 +1,174 @@
+*player.txt*                                                          *player*
+
+==============================================================================
+Table of Contents                                   *player-table-of-contents*
+
+1. player.nvim                                            |player-player.nvim|
+  - Why?                                             |player-player.nvim-why?|
+  - Install                                       |player-player.nvim-install|
+  - Usage                                           |player-player.nvim-usage|
+  - Configuration                           |player-player.nvim-configuration|
+  - API                                               |player-player.nvim-api|
+
+==============================================================================
+1. player.nvim                                            *player-player.nvim*
+
+A Neovim plugin that control media players that supports MPRIS
+<https://wiki.archlinux.org/title/MPRIS> using playerctl.
+
+
+https://github.com/user-attachments/assets/6e18b921-e5e7-402f-95b5-4ffa607606b1
+
+
+
+
+WHY?                                                 *player-player.nvim-why?*
+
+I made this plugin mainly for myself. I don’t want to leave the editor just
+to pause, play, or skip tracks while coding, as it really disrupts my flow. If
+I need to do something more intensive with the music player, that should be the
+only reason to switch back to the music player application. For that reason, I
+don’t intend for Neovim to become a music player at all.
+
+
+
+**Dependencies:**
+
+- playerctl <https://github.com/altdesktop/playerctl>
+
+
+
+
+INSTALL                                           *player-player.nvim-install*
+
+**Lazy**
+
+>lua
+    {
+      "alexxGmZ/player.nvim",
+      cmd = "Player", -- Lazy loading (optional) : plugin is loaded only when the command is called
+    }
+<
+
+Run `:checkhealth player` to check if the plugin is correctly installed.
+
+
+USAGE                                               *player-player.nvim-usage*
+
+Since this plugin is **not a media player** itself but a tool to control media
+player playback, the media player application needs to be open first.
+
+To ensure the desired media player application is supported, check it using
+`playerctl`.
+
+>bash
+    playerctl -l
+<
+
+**Playback commands**
+
+>
+    next
+    previous
+    pause
+    play
+    play-pause
+    default
+<
+
+Notify the status of the current default player.
+
+>
+    :Player
+<
+
+Notify the status of the selected player.
+
+>
+    :Player <selected_player>
+<
+
+Notify the default player for the current neovim session. If empty then the
+default player will be according to playerctl.
+
+>
+    :Player default
+<
+
+Set a default player for the whole neovim session.
+
+>
+    :Player <selected_player> default
+<
+
+Control player playback
+
+>
+    :Player <playback_command>
+    :Player <selected_player> <playback_command>
+<
+
+
+CONFIGURATION                               *player-player.nvim-configuration*
+
+>lua
+    require("player").setup({
+      -- Overrides the plugin's default list of supported players.
+      supported_players = {
+        "cmus",
+        "spotify",
+        "firefox",
+        "mpv"
+      },
+    
+      -- notify the now playing track of the default player or the current active player
+      -- during these events { CursorHold, CursorHoldI, and FocusGained }
+      notify_now_playing = false
+    })
+<
+
+
+API                                                   *player-player.nvim-api*
+
+To call the api.
+
+>lua
+    local api = require("player.api")
+<
+
+API functions.
+
+  -------------------------------------------------------------------------------
+  Function                    Parameter/s      Return
+  --------------------------- ---------------- ----------------------------------
+  get_artist()                player{string |  Song artist {string}
+                              nil}             
+
+  get_title()                 player{string |  Song title {string}
+                              nil}             
+
+  get_status()                player{string |  Media player status {string}
+                              nil}             
+
+  get_player_name()           player{string |  Media player name {string}
+                              nil}             
+
+  get_file_url()              player{string |  Media file URL {string}
+                              nil}             
+
+  get_curr_track_pos()        player{string |  Track position in milliseconds
+                              nil}             {number}
+
+  get_curr_track_len()        player{string |  Track length in milliseconds
+                              nil}             {number}
+
+  get_curr_track_pos_time()   player{string |  Track position in timestamp format
+                              nil}             {string}
+
+  get_curr_track_len_time()   player{string |  Track length in timestamp format
+                              nil}             {string}
+  -------------------------------------------------------------------------------
+
+Generated by panvimdoc <https://github.com/kdheepak/panvimdoc>
+
+vim:tw=78:ts=8:noet:ft=help:norl:
