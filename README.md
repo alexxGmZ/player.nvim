@@ -19,7 +19,7 @@ become a music player at all.
 
 **Dependencies:**
 
-* [playerctl](https://github.com/altdesktop/playerctl) 
+* [playerctl](https://github.com/altdesktop/playerctl)
 
 <br>
 
