@@ -160,11 +160,7 @@ function M.setup(opts)
    vim.api.nvim_create_user_command("Player", function(args)
       local arg1 = args.fargs[1] or ""
       local arg2 = args.fargs[2] or ""
-      local status = api.get_status()
-
-      if status == "No players found" or status == "Stopped" then
-         return notify(status, "WARN");
-      end
+      local status = ""
 
       if arg1 == "" and arg2 == "" then
          return notify_player(default_player)
