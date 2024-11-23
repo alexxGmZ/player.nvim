@@ -3,7 +3,7 @@ name: panvimdoc
 on:
   push:
     branches:
-      - '*'
+      - 'main'
 
 permissions:
   contents: write
