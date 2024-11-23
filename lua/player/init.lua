@@ -1,3 +1,4 @@
+local config = require("player.config")
 local api = require("player.api")
 local player_args = {}
 local playback_commands = {
@@ -8,16 +9,7 @@ local playback_commands = {
    "play-pause",
    "default"
 }
-local default_config = {
-   supported_players = {
-      "cmus",
-      "spotify",
-      "firefox",
-      "mpv"
-   },
-   notify_now_playing = false
-}
-local config = default_config
+local plugin_opts
 local default_player = ""
 local current_track = ""
 local M = {}
@@ -34,7 +26,7 @@ end
 ---@param arg string
 ---@return boolean
 local function is_supported_player(arg)
-   for _, player in ipairs(config.supported_players) do
+   for _, player in ipairs(plugin_opts.supported_players) do
       if arg == player then return true end
    end
    return false
@@ -143,17 +135,15 @@ function M.setup(opts)
       table.insert(player_args, command)
    end
 
-   if opts and next(opts) then
-      config = opts
-   end
+   plugin_opts = config.handle_user_opts(opts)
 
-   if config.notify_now_playing then
+   if plugin_opts.notify_now_playing then
       notify_now_playing()
    end
 
    -- merge supported players to player_args, it is to make sure included players via user
    -- config will appear in cmdline completion
-   for _, player in ipairs(config.supported_players) do
+   for _, player in ipairs(plugin_opts.supported_players) do
       table.insert(player_args, player)
    end
 
