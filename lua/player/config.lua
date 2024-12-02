@@ -7,7 +7,8 @@ M.default_opts = {
       "firefox",
       "mpv"
    },
-   notify_now_playing = false
+   notify_now_playing = false,
+   notifier = 0
 }
 
 function M.handle_user_opts(opts)

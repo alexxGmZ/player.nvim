@@ -13,13 +13,18 @@ local plugin_opts
 local default_player = ""
 local current_track = ""
 local M = {}
+local status, notifier = pcall(require, "notify")
 
 --- nvim-notify support
 ---@param message string notify message
 ---@param log_level string|nil vim.log.levels
 ---@return function vim.notify
 local function notify(message, log_level)
-   return vim.notify(message, log_level, { title = "player.nvim" })
+   if (status and plugin_opts.notifier == 1) and 
+      return notifier(message, log_level, { title = "player.nvim" })
+   else
+      return vim.notify(message, log_level, { title = "player.nvim" })
+   end
 end
 
 --- If an argument is a supported player
