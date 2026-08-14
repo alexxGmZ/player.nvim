@@ -1,5 +1,5 @@
 *player.txt*                                                          *player*
-                                For NVIM v0.8.0    Last change: 2026 August 14
+                                 For NVIM v0.12    Last change: 2026 August 14
 
 ==============================================================================
 Table of Contents                                   *player-table-of-contents*
