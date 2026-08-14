@@ -1,6 +1,5 @@
 local config = require("player.config")
 local api = require("player.api")
-local player_args = {}
 local playback_commands = {
    "next",
    "previous",
@@ -129,10 +128,7 @@ function M.get_track(player)
 end
 
 function M.setup(opts)
-   -- merge plaback commands to player_args
-   for _, command in ipairs(playback_commands) do
-      table.insert(player_args, command)
-   end
+   local player_args = {}
 
    plugin_opts = config.handle_user_opts(opts)
 
@@ -140,11 +136,9 @@ function M.setup(opts)
       notify_now_playing()
    end
 
-   -- merge supported players to player_args, it is to make sure included players via user
-   -- config will appear in cmdline completion
-   for _, player in ipairs(plugin_opts.supported_players) do
-      table.insert(player_args, player)
-   end
+   -- merge plaback commands and supported players to player_args
+   vim.list_extend(player_args, playback_commands)
+   vim.list_extend(player_args, plugin_opts.supported_players)
 
    vim.api.nvim_create_user_command("Player", function(args)
       local arg1 = args.fargs[1] or ""
