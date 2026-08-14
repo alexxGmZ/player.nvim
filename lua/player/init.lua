@@ -102,7 +102,6 @@ function M.run_command(player, command)
       shell_command = { "playerctl", "-p", player, command }
    end
    vim.system(shell_command):wait()
-   vim.wait(500)
    notify_player(player)
 end
 
