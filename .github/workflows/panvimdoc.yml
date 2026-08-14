@@ -18,6 +18,7 @@ jobs:
         with:
           vimdoc: 'player'
           pandoc: 'README.md'
+          version: 'NVIM v0.12'
           description: '*player*'
 
       - uses: stefanzweifel/git-auto-commit-action@v4
