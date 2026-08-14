@@ -19,9 +19,8 @@ jobs:
           vimdoc: 'player'
           pandoc: 'README.md'
           version: 'NVIM v0.12'
-          description: '*player*'
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "Github Actions : generate Vimdoc from README"
+          commit_message: "chore(panvimdoc): generate Vimdoc from README"
           branch: ${{ github.head_ref }}
