@@ -85,6 +85,7 @@ Control player playback
 ## Configuration
 ```lua
 require("player").setup({
+  default_player = nil,
   -- Overrides the plugin's default list of supported players.
   supported_players = {
     "cmus",
