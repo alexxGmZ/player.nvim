@@ -1,6 +1,7 @@
 local M = {}
 
 M.default_opts = {
+   default_player = nil,
    supported_players = {
       "cmus",
       "spotify",

@@ -131,6 +131,7 @@ function M.setup(opts)
    local player_args = {}
 
    plugin_opts = config.handle_user_opts(opts)
+   default_player = plugin_opts.default_player or ""
 
    if plugin_opts.notify_now_playing then
       notify_now_playing()
