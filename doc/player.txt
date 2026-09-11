@@ -1,5 +1,5 @@
 *player.txt*
-                                 For NVIM v0.12    Last change: 2026 August 14
+                              For NVIM v0.12    Last change: 2026 September 11
 
 ==============================================================================
 Table of Contents                                   *player-table-of-contents*
@@ -114,6 +114,7 @@ CONFIGURATION                               *player-player.nvim-configuration*
 
 >lua
     require("player").setup({
+      default_player = nil,
       -- Overrides the plugin's default list of supported players.
       supported_players = {
         "cmus",
