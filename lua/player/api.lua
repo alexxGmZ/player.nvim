@@ -111,4 +111,11 @@ function M.get_curr_track_len_time(player)
    return length_timestamp
 end
 
+--- Get the list of playerctl supported players
+---@return table
+function M.get_players()
+   local player_list = vim.system({ "playerctl", "-l" }, { text = true }):wait()
+   return vim.split(player_list.stdout, "\n", { trimempty = true })
+end
+
 return M
