@@ -85,15 +85,8 @@ Control player playback
 ## Configuration
 ```lua
 require("player").setup({
+  -- set a default player instead of relying on the first item of `playerctl -l`
   default_player = nil,
-  -- Overrides the plugin's default list of supported players.
-  supported_players = {
-    "cmus",
-    "spotify",
-    "firefox",
-    "mpv"
-  },
-
   -- notify the now playing track of the default player or the current active player
   -- during these events { CursorHold, CursorHoldI, and FocusGained }
   notify_now_playing = false
@@ -120,4 +113,5 @@ API functions.
 | get_curr_track_len()      | player{string \| nil} | Track length in milliseconds {number}       |
 | get_curr_track_pos_time() | player{string \| nil} | Track position in timestamp format {string} |
 | get_curr_track_len_time() | player{string \| nil} | Track length in timestamp format {string}   |
+| get_players()             |                       | Table of supported players {table}          |
 
