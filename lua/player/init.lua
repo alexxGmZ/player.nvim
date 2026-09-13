@@ -25,7 +25,8 @@ end
 ---@param arg string
 ---@return boolean
 local function is_supported_player(arg)
-   for _, player in ipairs(plugin_opts.supported_players) do
+   local players = api.get_players()
+   for _, player in ipairs(players) do
       if arg == player then return true end
    end
    return false
@@ -129,6 +130,7 @@ end
 
 function M.setup(opts)
    local player_args = {}
+   local player_table = {}
 
    plugin_opts = config.handle_user_opts(opts)
    default_player = plugin_opts.default_player or ""
@@ -137,9 +139,15 @@ function M.setup(opts)
       notify_now_playing()
    end
 
-   -- merge plaback commands and supported players to player_args
-   vim.list_extend(player_args, playback_commands)
-   vim.list_extend(player_args, plugin_opts.supported_players)
+   vim.api.nvim_create_autocmd("CmdlineEnter", {
+      callback = function()
+         player_args = {}
+         player_table = api.get_players()
+
+         vim.list_extend(player_args, playback_commands)
+         vim.list_extend(player_args, player_table)
+      end
+   })
 
    vim.api.nvim_create_user_command("Player", function(args)
       local arg1 = args.fargs[1] or ""
