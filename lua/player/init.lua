@@ -12,6 +12,7 @@ local plugin_opts
 local default_player = ""
 local current_track = ""
 local M = {}
+local AUGROUP = "player-nvim"
 
 --- nvim-notify support
 ---@param message string notify message
@@ -69,8 +70,8 @@ local function notify_player(supported_player)
 end
 
 --- Notify now playing track of default player or the current active player
-local function notify_now_playing()
-   local augroup = vim.api.nvim_create_augroup("player-nvim", {})
+---@param augroup number augroup to register the autocmd in
+local function notify_now_playing(augroup)
    local events = {
       "CursorHold",
       "CursorHoldI",
@@ -131,15 +132,17 @@ end
 function M.setup(opts)
    local player_args = {}
    local player_table = {}
+   local augroup = vim.api.nvim_create_augroup(AUGROUP, { clear = true })
 
    plugin_opts = config.handle_user_opts(opts)
    default_player = plugin_opts.default_player or ""
 
    if plugin_opts.notify_now_playing then
-      notify_now_playing()
+      notify_now_playing(augroup)
    end
 
    vim.api.nvim_create_autocmd("CmdlineEnter", {
+      group = augroup,
       callback = function()
          player_args = {}
          player_table = api.get_players()
