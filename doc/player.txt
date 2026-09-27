@@ -1,5 +1,5 @@
 *player.txt*
-                              For NVIM v0.12    Last change: 2026 September 13
+                              For NVIM v0.12    Last change: 2026 September 27
 
 ==============================================================================
 Table of Contents                                   *player-table-of-contents*
@@ -137,19 +137,19 @@ API functions.
   Function                    Parameter/s      Return
   --------------------------- ---------------- ----------------------------------
   get_artist()                player{string |  Song artist {string}
-                              nil}             
+                              nil}
 
   get_title()                 player{string |  Song title {string}
-                              nil}             
+                              nil}
 
   get_status()                player{string |  Media player status {string}
-                              nil}             
+                              nil}
 
   get_player_name()           player{string |  Media player name {string}
-                              nil}             
+                              nil}
 
   get_file_url()              player{string |  Media file URL {string}
-                              nil}             
+                              nil}
 
   get_curr_track_pos()        player{string |  Track position in milliseconds
                               nil}             {number}
